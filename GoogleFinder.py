@@ -51,7 +51,7 @@ class Google_finder:
         result = []
         for i in range(len(y)):
             name = 'Name : ' + y[i]['name']
-            address = 'Address : ' + y[i]['formatted_address']
+            address = 'Адресс : ' + y[i]['formatted_address']
 
             if 'opening_hours' in y[i].keys():
                 status = y[i]['opening_hours']['open_now']
@@ -65,7 +65,7 @@ class Google_finder:
             lat = y[i]['geometry']['location']['lat']
             lng = y[i]['geometry']['location']['lng']
 
-            distanse = "Distanse : " + self.culc_distances([str(my_lat), str(my_lng)], [lat, lng])
+            distanse = "Дистанция : " + self.culc_distances([str(my_lat), str(my_lng)], [lat, lng])
 
             res_dic = {'Name': name, 'Address': address, 'Status': status, "Distanse": distanse, 'lat': lat, 'lng': lng}
             result.append(res_dic)
