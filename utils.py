@@ -11,7 +11,7 @@ from aiogram.types import *
 from aiohttp import BasicAuth
 from dotenv import load_dotenv
 from dbTools import *
-from functions.navigation import *
+from GoogleFinder import Google_finder
 import re
 
 

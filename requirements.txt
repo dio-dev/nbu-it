@@ -2,3 +2,6 @@ python-dotenv
 aiohttp
 aiogram
 sqlalchemy
+pymysql
+requests
+googlemaps

@@ -5,3 +5,4 @@ class UserStates(StatesGroup):
     select_type = State()
     select_name = State()
     get_location = State()
+    show_result = State()

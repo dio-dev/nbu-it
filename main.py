@@ -28,7 +28,7 @@ BAD_CONTENT = ContentTypes.AUDIO
 
 
 loop = asyncio.get_event_loop()
-loop.create_task(start_checker())
+#loop.create_task(start_checker())
 bot = Bot(TOKEN, loop=loop)
 storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
@@ -60,11 +60,31 @@ async def on_startup(app):
                                 commands=['start'],
                                 state='*')
 
-    dp.register_callback_query_handler(back_function,
+    dp.register_callback_query_handler(start,
                                        lambda c: c.data and c.data == "back",
                                        state="*")
 
-    dp.register_message_handler(success_payment, content_types=ContentType.SUCCESSFUL_PAYMENT)
+    dp.register_message_handler(start,
+                                lambda m: m.text == "Искать заново",
+                                state="*")
+
+    dp.register_callback_query_handler(get_name,
+                                       lambda c: c.data,
+                                       state=UserStates.select_type)
+
+    dp.register_message_handler(get_location,
+                                lambda m: m.text,
+                                state=UserStates.select_name)
+
+    dp.register_callback_query_handler(get_location,
+                                lambda c: c.data,
+                                state=UserStates.select_name)
+
+    dp.register_message_handler(show_result, content_types=ContentTypes.LOCATION, state=UserStates.get_location)
+
+    dp.register_callback_query_handler(send_location,
+                                       lambda c: c.data,
+                                       state=UserStates.show_result)
 
     webhook = await bot.get_webhook_info()
 
