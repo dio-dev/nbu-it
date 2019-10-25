@@ -23,12 +23,12 @@ class Google_finder:
         url ="https://maps.googleapis.com/maps/api/geocode/json?latlng="+str(lat)+","+str(lng)+"&key="+api_key
         r = requests.get(url + '&key=' + api_key)
         x = r.json()
-        y = x['results']
         street_number = x['results'][0]['address_components'][0]['long_name']
         street_name = x['results'][0]['address_components'][1]['long_name']
-        city = x['results'][0]['address_components'][2]['long_name']
+        city = x['results'][0]['address_components'][3]['long_name']
+        region = x['results'][0]['address_components'][4]['long_name']
         index = x['results'][0]['address_components'][6]['long_name']
-        result = {'street_number': street_number, 'street_name': street_name, 'city': city, 'index':index}
+        result = {'street_number': street_number, 'street_name': street_name, 'city': city, 'region': region, 'index':index}
 
         return result
 
