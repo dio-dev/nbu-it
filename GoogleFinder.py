@@ -54,7 +54,9 @@ class Google_finder:
             address = 'Адресс : ' + y[i]['formatted_address']
 
             if 'opening_hours' in y[i].keys():
-                status = y[i]['opening_hours']['open_now']
+                status = "close"
+                if "open_now" in y[i]['opening_hours']:
+                    status = y[i]['opening_hours']['open_now']
 
                 if status == True:
                     door = "open"
