@@ -106,7 +106,7 @@ async def show_result(message: types.Message, state: FSMContext):
 
 
 async def send_location(callback_query: types.CallbackQuery, state: FSMContext):
-    
+
     await UserStates.select_name.set()
 
     async with state.proxy() as data:
