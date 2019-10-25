@@ -8,10 +8,8 @@ from utils import bot
 weekdays = ('Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс')
 
 
-async def update_bd():pass
-
-
-
+async def update_bd():
+    pass
 
 
 async def start_checker():
