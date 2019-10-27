@@ -1,4 +1,4 @@
-from utils import *
+﻿from utils import *
 
 
 async def start(message: types.Message, state: FSMContext):
@@ -94,7 +94,7 @@ async def show_result(message: types.Message, state: FSMContext):
                 break
 
         message_text1= "Обери потрібну адресу і я надішлю карту"
-        btn1 = InlineKeyboardButton(text="Искать заново", callback_data="back")
+        btn1 = InlineKeyboardButton(text="Шукати ще раз", callback_data="back")
         reply_markup.add(btn1)
 
         reply_markup1 = ReplyKeyboardMarkup(row_width=1, resize_keyboard=True)
