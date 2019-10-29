@@ -70,6 +70,12 @@ class Google_finder:
             res_dic = {'Name': name, 'Address': address, 'Status': status, "Distanse": distanse, 'lat': lat, 'lng': lng}
             result.append(res_dic)
 
+        def get_dict(dictionary):
+            res = dictionary['Distanse'].split(' ')
+            return res[0]
+
+        result = sorted(result, key=get_dict)
+
         return result
 
 
