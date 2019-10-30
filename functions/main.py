@@ -66,27 +66,31 @@ async def show_result(message: types.Message, state: FSMContext):
 
         if object_type == '1':
             object_name = data["object_name"]
-            place_type = "Відділення банку"
+            place_type = "bank"
 
         elif object_type == '2':
             object_name = data["object_name"]
-            place_type = "Банкомат"
+            place_type = "atm"
 
         else:
-            place_type = "Обмінник"
+            place_type = "exchange"
 
-        google_service = Google_finder()
-
-        result = google_service.find_location(message.location.latitude, message.location.longitude, place_type, object_name)
+        api_client = NbuClient("qwerty", "qwerty")
+        result = api_client.get_nearbry_objects(place_type, object_name, message.location.latitude, message.location.longitude)
+        # google_service = Google_finder()
+        print(result)
+        #
+        # result = google_service.find_location(message.location.latitude, message.location.longitude, place_type, object_name)
         data["result"] = result
         message_text = 'Ближче всього до тебе:\r\n'
         counter = 1
         reply_markup = InlineKeyboardMarkup(row_width=1)
         for item in result:
-            name = item["Name"].split(": ")
-            adr = item["Address"]
-            distance = item["Distanse"]
-            message_text += f"{counter}. {name[1]}, {adr}, {distance}\r\n"
+            name = item["name"]
+            adress = api_client.get_address_details(item["adress_id"])
+            adr = adress["city"] + ", " + adress["street"] + " " + adress["building_number"]
+            distance = item["distance"]
+            message_text += f"{counter}. {name}, {adr}\r\nВiдстань - {distance}км\r\n"
             btn = InlineKeyboardButton(text=f"Геолокація - {counter}", callback_data=f"location-{counter}")
             reply_markup.add(btn)
             counter += 1

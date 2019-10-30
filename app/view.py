@@ -10,11 +10,12 @@ from datetime import datetime
 from dotenv import load_dotenv
 load_dotenv()
 from pathlib import Path  # python3 only
-env_path = Path('.') / '.env'
+env_path = Path('.').parent / '.env'
 load_dotenv(dotenv_path=env_path)
 
 import os
 api_key = os.getenv("API_KEY_GOOGLE")
+
 
 auth = HTTPBasicAuth()
 
@@ -32,18 +33,44 @@ class GetAll(Resource):
     @auth.login_required
     def get(self):
         try:
+            print(mysql)
             conn = mysql.connect()
             cur = conn.cursor(pymysql.cursors.DictCursor)
             cur.execute('select * from NBU;')
+            print(conn)
             rows = cur.fetchall()
             resp = jsonify(rows)
             resp.status_code = 200
+            conn.close()
+            cur.close()
+
             return resp
         except Exception as e:
             print(e)
         finally:
-            cur.close()
+            pass
+
+
+class GetAdress(Resource):
+    @auth.login_required
+    def get(self):
+        try:
+            adress_id = request.args.get('adress_id', default=None, type=int)
+            conn = mysql.connect()
+            cur = conn.cursor(pymysql.cursors.DictCursor)
+            cur.execute(f'select * from locations where id={adress_id};')
+            print(conn)
+            rows = cur.fetchone()
+            resp = jsonify(rows)
+            resp.status_code = 200
             conn.close()
+            cur.close()
+
+            return resp
+        except Exception as e:
+            print(e)
+        finally:
+            pass
 
 def culc_distances(my_loc, place_loc):
     """
@@ -86,7 +113,7 @@ class CalcDistances(Resource):
 
             conn = mysql.connect()
             cur = conn.cursor(pymysql.cursors.DictCursor)
-            if place_name == None:
+            if place_name == None or place_name == "":
                 sql = 'select * from NBU where type = ' + "'" + place_type + "'"
             else:
                 sql = 'select * from NBU where type = ' + "'" + place_type + "'" + ' and name = ' + "'" + place_name + "'"
@@ -135,9 +162,10 @@ class CalcDistances(Resource):
 
 #http://127.0.0.1:5000/dist/0/0/bank
 
-api.add_resource(GetAll, '/')
+api.add_resource(GetAll, '/nbu_objects')
 api.add_resource(CalcDistances, '/dist')
+api.add_resource(GetAdress, '/get_adress_detail')
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host="0.0.0.0")
 

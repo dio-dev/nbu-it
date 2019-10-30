@@ -4,7 +4,7 @@ from flaskext.mysql import MySQL
 from dotenv import load_dotenv
 load_dotenv()
 from pathlib import Path  # python3 only
-env_path = Path('.') / '.env'
+env_path = Path('.').parent / '.env'
 load_dotenv(dotenv_path=env_path)
 
 
